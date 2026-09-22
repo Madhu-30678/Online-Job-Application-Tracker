@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Job Application Tracker</h1>
+    <h2>User Dashboard</h2>
+
+    <button onclick="showForm()">Add Application</button>
+    <button onclick="showJobs()">My Applications</button>
+    <button onclick="logout()">Logout</button>
+
+    <!-- Add Application Form -->
+    <div id="form" style="display:none;">
+
+        <h3>Add Job Application</h3>
+
+        <input type="text" id="company" placeholder="Company Name">
+
+        <input type="text" id="role" placeholder="Job Role">
+
+        <select id="status">
+            <option>Applied</option>
+            <option>Interview</option>
+            <option>Selected</option>
+            <option>Rejected</option>
+        </select>
+
+        <button onclick="addJob()">Add Job</button>
+
+    </div>
+
+    <!-- Search -->
+    <h3>Search Applications</h3>
+
+    <input type="text"
+           id="search"
+           placeholder="Search Company"
+           onkeyup="searchJobs()">
+
+    <!-- Applications -->
+    <div id="jobs"></div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

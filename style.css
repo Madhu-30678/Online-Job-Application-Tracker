@@ -1,0 +1,109 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f5f9;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px #ccc;
+    text-align: center;
+}
+
+h1 {
+    color: #1d4ed8;
+}
+
+h2 {
+    color: #333;
+}
+
+input,
+select {
+    width: 90%;
+    padding: 12px;
+    margin: 8px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+}
+
+button {
+    padding: 12px 20px;
+    margin: 6px;
+    border: none;
+    border-radius: 5px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+#form {
+    margin: 25px auto;
+    padding: 20px;
+    background: #f5f7fa;
+    border-radius: 10px;
+}
+
+/* Flexbox */
+.container > button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Grid */
+#jobs,
+#adminData {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#jobs p,
+#adminData p {
+    background: #eef4ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 0;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    #jobs,
+    #adminData {
+        grid-template-columns: 1fr;
+    }
+
+    button {
+        width: 90%;
+    }
+}
