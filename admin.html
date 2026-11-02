@@ -1,27 +1,59 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobTrack - Admin Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<body class="dashboard-page">
 
-<body>
+    <header class="topbar">
+        <div class="topbar-brand">JobTrack Admin</div>
+        <div class="topbar-actions">
+            <span>Administrator</span>
+            <button onclick="adminLogout()" class="logout-btn">Logout</button>
+        </div>
+    </header>
 
-<div class="container">
+    <main class="dashboard-container">
+        <div class="page-heading">
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p>Monitor registered users and job applications.</p>
+            </div>
+        </div>
 
-    <h1>Job Application Tracker</h1>
+        <section class="stats admin-stats">
+            <div class="stat-card">
+                <span>Registered Users</span>
+                <h2 id="adminUserCount">0</h2>
+            </div>
+            <div class="stat-card">
+                <span>Total Applications</span>
+                <h2 id="adminJobCount">0</h2>
+            </div>
+        </section>
 
-    <h2>Admin Dashboard</h2>
+        <section class="panel">
+            <h2>Registered Users</h2>
+            <div id="usersList"></div>
+        </section>
 
-    <button onclick="showUsers()">View Users</button>
-    <button onclick="showAllJobs()">View Applications</button>
-    <button onclick="logout()">Logout</button>
+        <section class="panel">
+            <h2>All Job Applications</h2>
+            <input type="search" id="adminSearch"
+                   placeholder="Search by company, role or user email..."
+                   oninput="showAllJobs()">
+            <div id="allJobs"></div>
+        </section>
 
-    <div id="adminData"></div>
+        <footer class="footer">
+            JobTrack Administration | Academic Project
+        </footer>
+    </main>
 
-</div>
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
