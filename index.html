@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobTrack - Login</title>
+    <title>JobTrack | Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="auth-page">
 
-    <div class="auth-card">
+    <main class="auth-card">
         <div class="brand-icon">JT</div>
         <h1>JobTrack</h1>
         <p class="subtitle">Online Job Application Tracker</p>
@@ -18,11 +18,11 @@
         <p class="muted">Login to manage your job applications.</p>
 
         <form onsubmit="login(event)">
-            <label>Email Address</label>
+            <label for="loginEmail">Email Address</label>
             <input type="email" id="loginEmail"
                    placeholder="Enter your email" required>
 
-            <label>Password</label>
+            <label for="loginPassword">Password</label>
             <input type="password" id="loginPassword"
                    placeholder="Enter your password" required>
 
@@ -31,16 +31,16 @@
             </button>
         </form>
 
-        <a class="forgot-link" href="forgot.html">Forgot Password?</a>
+        <a href="forgot.html" class="forgot-link">Forgot Password?</a>
 
-        <div class="auth-divider">OR</div>
+        <div class="divider"><span>OR</span></div>
 
         <a href="signup.html" class="secondary-btn full-btn">
             Create New Account
         </a>
 
         <a href="admin.html" class="admin-link">Admin Login</a>
-    </div>
+    </main>
 
     <script src="script.js"></script>
 </body>

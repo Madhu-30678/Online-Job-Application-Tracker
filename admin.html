@@ -4,55 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobTrack - Admin Dashboard</title>
+    <title>JobTrack | Admin</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dashboard-page">
 
-    <header class="topbar">
-        <div class="topbar-brand">JobTrack Admin</div>
-        <div class="topbar-actions">
-            <span>Administrator</span>
-            <button onclick="adminLogout()" class="logout-btn">Logout</button>
-        </div>
-    </header>
+    <main id="adminLogin" class="auth-card admin-login">
+        <div class="brand-icon">JT</div>
+        <h1>Admin Login</h1>
+        <p class="subtitle">Sign in to manage the application system.</p>
 
-    <main class="dashboard-container">
-        <div class="page-heading">
-            <div>
-                <h1>Admin Dashboard</h1>
-                <p>Monitor registered users and job applications.</p>
-            </div>
-        </div>
+        <form onsubmit="adminLoginUser(event)">
+            <label for="adminEmail">Admin Email</label>
+            <input type="email" id="adminEmail"
+                   placeholder="Enter admin email" required>
 
-        <section class="stats admin-stats">
-            <div class="stat-card">
-                <span>Registered Users</span>
-                <h2 id="adminUserCount">0</h2>
-            </div>
-            <div class="stat-card">
-                <span>Total Applications</span>
-                <h2 id="adminJobCount">0</h2>
-            </div>
-        </section>
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword"
+                   placeholder="Enter admin password" required>
 
-        <section class="panel">
-            <h2>Registered Users</h2>
-            <div id="usersList"></div>
-        </section>
+            <button type="submit" class="primary-btn full-btn">
+                Login as Admin
+            </button>
+        </form>
 
-        <section class="panel">
-            <h2>All Job Applications</h2>
-            <input type="search" id="adminSearch"
-                   placeholder="Search by company, role or user email..."
-                   oninput="showAllJobs()">
-            <div id="allJobs"></div>
-        </section>
-
-        <footer class="footer">
-            JobTrack Administration | Academic Project
-        </footer>
+        <p class="bottom-text">
+            <a href="index.html">Back to User Login</a>
+        </p>
     </main>
+
+    <div id="adminDashboard" style="display:none;">
+        <header class="topbar">
+            <a href="admin.html" class="topbar-brand">JobTrack Admin</a>
+            <div class="topbar-actions">
+                <span>Administrator</span>
+                <button onclick="adminLogout()" class="logout-btn">
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <main class="dashboard-container">
+            <section class="page-heading">
+                <h1>Admin Dashboard</h1>
+                <p>Manage registered users and monitor job applications.</p>
+            </section>
+
+            <section class="stats admin-stats">
+                <div class="stat-card">
+                    <span>Registered Users</span>
+                    <h2 id="adminUserCount">0</h2>
+                </div>
+                <div class="stat-card">
+                    <span>Total Applications</span>
+                    <h2 id="adminJobCount">0</h2>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>Registered Users</h2>
+                <div id="usersList"></div>
+            </section>
+
+            <section class="panel">
+                <h2>All Job Applications</h2>
+
+                <input type="search" id="adminSearch"
+                       placeholder="Search by company, role or email..."
+                       oninput="showAllJobs()">
+
+                <div id="allJobs"></div>
+            </section>
+
+            <footer class="footer">
+                © 2026 JobTrack | Administration
+            </footer>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>

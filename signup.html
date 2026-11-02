@@ -4,30 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobTrack - Signup</title>
+    <title>JobTrack | Sign Up</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="auth-page">
 
-    <div class="auth-card">
+    <main class="auth-card">
         <div class="brand-icon">JT</div>
         <h1>Create Account</h1>
-        <p class="subtitle">Start tracking your job applications.</p>
+        <p class="subtitle">Start managing your job applications.</p>
 
         <form onsubmit="signup(event)">
-            <label>Full Name</label>
+            <label for="signupName">Full Name</label>
             <input type="text" id="signupName"
                    placeholder="Enter your full name" required>
 
-            <label>Email Address</label>
+            <label for="signupEmail">Email Address</label>
             <input type="email" id="signupEmail"
                    placeholder="Enter your email" required>
 
-            <label>Password</label>
+            <label for="signupPassword">Password</label>
             <input type="password" id="signupPassword"
-                   placeholder="Create a password" minlength="6" required>
+                   placeholder="Minimum 6 characters"
+                   minlength="6" required>
 
-            <label>Confirm Password</label>
+            <label for="confirmPassword">Confirm Password</label>
             <input type="password" id="confirmPassword"
                    placeholder="Confirm your password" required>
 
@@ -40,7 +41,7 @@
             Already have an account?
             <a href="index.html">Login here</a>
         </p>
-    </div>
+    </main>
 
     <script src="script.js"></script>
 </body>

@@ -1,316 +1,559 @@
-// =====================================
-// HELPER FUNCTION
-// =====================================
+
+// ==========================================
+// JOBTRACK - ONLINE JOB APPLICATION TRACKER
+// HTML + CSS + JAVASCRIPT + LOCAL STORAGE
+// ==========================================
+
+const ADMIN_EMAIL = "admin@gmail.com";
+const ADMIN_PASSWORD = "admin123";
+
+const VALID_STATUSES = [
+    "Applied",
+    "Interview",
+    "Selected",
+    "Rejected"
+];
+
+// ---------- STORAGE FUNCTIONS ----------
+
+function getUsers() {
+    try {
+        return JSON.parse(localStorage.getItem("users") || "[]");
+    } catch {
+        return [];
+    }
+}
+
+function saveUsers(users) {
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+function getJobs() {
+    try {
+        return JSON.parse(localStorage.getItem("jobs") || "[]");
+    } catch {
+        return [];
+    }
+}
+
+function saveJobs(jobs) {
+    localStorage.setItem("jobs", JSON.stringify(jobs));
+}
+
+function getCurrentUser() {
+    try {
+        return JSON.parse(localStorage.getItem("currentUser") || "null");
+    } catch {
+        return null;
+    }
+}
+
+function getJobOwner(job) {
+    return String(job.userEmail || job.email || job.user || "")
+        .toLowerCase();
+}
+
+function makeId() {
+    return Date.now().toString(36) +
+        Math.random().toString(36).slice(2, 8);
+}
 
 function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, function(character) {
-        return {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-        }[character];
-    });
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
 }
 
+// ---------- SIGNUP ----------
 
-// =====================================
-// SIGNUP
-// =====================================
+function signup(event) {
+    event.preventDefault();
 
-function signup() {
-    let name = document.getElementById("name").value.trim();
-    let email = document.getElementById("email").value.trim();
-    let password = document.getElementById("password").value.trim();
+    const name = document.getElementById("signupName").value.trim();
+    const email = document.getElementById("signupEmail")
+        .value.trim().toLowerCase();
+    const password = document.getElementById("signupPassword").value;
+    const confirm = document.getElementById("confirmPassword").value;
 
     if (!name || !email || !password) {
-        document.getElementById("message").innerHTML = "Please fill all fields";
+        alert("Please fill in all fields.");
         return;
     }
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    if (password.length < 6) {
+        alert("Password must contain at least 6 characters.");
+        return;
+    }
 
-    let existingUser = users.find(function(user) {
-        return user.email.toLowerCase() === email.toLowerCase();
+    if (password !== confirm) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    const users = getUsers();
+
+    if (users.some(user =>
+        String(user.email).toLowerCase() === email
+    )) {
+        alert("This email is already registered. Please login.");
+        return;
+    }
+
+    users.push({
+        id: makeId(),
+        name,
+        email,
+        password
     });
 
-    if (existingUser) {
-        document.getElementById("message").innerHTML = "Email already registered";
-        return;
-    }
+    saveUsers(users);
 
-    users.push({ name: name, email: email, password: password });
-    localStorage.setItem("users", JSON.stringify(users));
-
-    document.getElementById("message").innerHTML = "Signup successful";
-
-    setTimeout(function() {
-        window.location.href = "index.html";
-    }, 1000);
+    alert("Account created successfully!");
+    window.location.href = "index.html";
 }
 
+// ---------- USER LOGIN ----------
 
-// =====================================
-// LOGIN
-// =====================================
+function login(event) {
+    event.preventDefault();
 
-function login() {
-    let email = document.getElementById("email").value.trim();
-    let password = document.getElementById("password").value.trim();
+    const email = document.getElementById("loginEmail")
+        .value.trim().toLowerCase();
+    const password = document.getElementById("loginPassword").value;
 
-    if (!email || !password) {
-        document.getElementById("message").innerHTML = "Enter email and password";
-        return;
-    }
-
-    if (email.toLowerCase() === "admin@gmail.com" && password === "admin123") {
-        window.location.href = "admin.html";
-        return;
-    }
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    let user = users.find(function(u) {
-        return u.email.toLowerCase() === email.toLowerCase()
-            && u.password === password;
-    });
-
-    if (user) {
-        localStorage.setItem("currentUser", user.email);
-        window.location.href = "user.html";
-    } else {
-        document.getElementById("message").innerHTML = "Invalid email or password";
-    }
-}
-
-
-// =====================================
-// FORGOT PASSWORD
-// =====================================
-
-function resetPassword() {
-    let email = document.getElementById("email").value.trim();
-    let newPassword = document.getElementById("newPassword").value.trim();
-
-    if (!email || !newPassword) {
-        document.getElementById("message").innerHTML = "Please fill all fields";
-        return;
-    }
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    let user = users.find(function(u) {
-        return u.email.toLowerCase() === email.toLowerCase();
-    });
+    const user = getUsers().find(item =>
+        String(item.email).toLowerCase() === email &&
+        item.password === password
+    );
 
     if (!user) {
-        document.getElementById("message").innerHTML = "Email not found";
+        alert("Invalid email or password.");
         return;
     }
 
-    user.password = newPassword;
-    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("currentUser", JSON.stringify({
+        id: user.id,
+        name: user.name,
+        email: user.email
+    }));
 
-    document.getElementById("message").innerHTML = "Password reset successful";
+    window.location.href = "user.html";
+}
 
-    setTimeout(function() {
+// ---------- FORGOT PASSWORD ----------
+
+function resetPassword(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("resetEmail")
+        .value.trim().toLowerCase();
+    const password = document.getElementById("newPassword").value;
+    const confirm = document.getElementById("confirmNewPassword").value;
+
+    if (password.length < 6) {
+        alert("Password must contain at least 6 characters.");
+        return;
+    }
+
+    if (password !== confirm) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    const users = getUsers();
+    const index = users.findIndex(user =>
+        String(user.email).toLowerCase() === email
+    );
+
+    if (index === -1) {
+        alert("No account found with this email.");
+        return;
+    }
+
+    users[index].password = password;
+    saveUsers(users);
+
+    alert("Password updated successfully. Please login.");
+    window.location.href = "index.html";
+}
+
+// ---------- USER DASHBOARD ----------
+
+function showUserDashboard() {
+    const user = getCurrentUser();
+
+    if (!user) {
+        alert("Please login first.");
         window.location.href = "index.html";
-    }, 1000);
+        return false;
+    }
+
+    const welcome = document.getElementById("welcomeUser");
+
+    if (welcome) {
+        welcome.textContent = "Welcome, " + user.name;
+    }
+
+    return true;
 }
 
+// ---------- ADD APPLICATION ----------
 
-// =====================================
-// SHOW ADD APPLICATION FORM
-// =====================================
+function addJob(event) {
+    event.preventDefault();
 
-function showForm() {
-    document.getElementById("form").style.display = "block";
-}
+    const user = getCurrentUser();
 
-
-// =====================================
-// ADD JOB APPLICATION
-// =====================================
-
-function addJob() {
-    let company = document.getElementById("company").value.trim();
-    let role = document.getElementById("role").value.trim();
-    let status = document.getElementById("status").value;
-    let email = localStorage.getItem("currentUser");
-
-    if (!email) {
-        alert("Please login first");
+    if (!user) {
+        alert("Please login first.");
         window.location.href = "index.html";
         return;
     }
+
+    const company = document.getElementById("company").value.trim();
+    const role = document.getElementById("role").value.trim();
+    const status = document.getElementById("status").value;
+    const dateInput = document.getElementById("applicationDate");
+
+    const date = dateInput.value ||
+        new Date().toISOString().slice(0, 10);
 
     if (!company || !role) {
-        alert("Please fill all fields");
+        alert("Please enter company name and job role.");
         return;
     }
 
-    let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+    if (!VALID_STATUSES.includes(status)) {
+        alert("Please select a valid application status.");
+        return;
+    }
+
+    const jobs = getJobs();
 
     jobs.push({
-        company: company,
-        role: role,
-        status: status,
-        email: email
+        id: makeId(),
+        userEmail: user.email.toLowerCase(),
+        company,
+        role,
+        status,
+        date
     });
 
-    localStorage.setItem("jobs", JSON.stringify(jobs));
+    saveJobs(jobs);
 
-    document.getElementById("company").value = "";
-    document.getElementById("role").value = "";
-    document.getElementById("status").value = "Applied";
-    document.getElementById("form").style.display = "none";
+    document.getElementById("jobForm").reset();
+    alert("Application added successfully!");
 
-    alert("Application added successfully");
     showJobs();
 }
 
+// ---------- DASHBOARD STATISTICS ----------
 
-// =====================================
-// SHOW DASHBOARD STATISTICS
-// =====================================
+function updateStatistics(jobs) {
+    const counts = {
+        totalCount: jobs.length,
+        appliedCount: jobs.filter(j => j.status === "Applied").length,
+        interviewCount: jobs.filter(j => j.status === "Interview").length,
+        selectedCount: jobs.filter(j => j.status === "Selected").length,
+        rejectedCount: jobs.filter(j => j.status === "Rejected").length
+    };
 
-function updateStatistics(myJobs) {
-    document.getElementById("totalCount").textContent = myJobs.length;
+    Object.entries(counts).forEach(([id, value]) => {
+        const element = document.getElementById(id);
 
-    document.getElementById("appliedCount").textContent =
-        myJobs.filter(job => job.status === "Applied").length;
-
-    document.getElementById("interviewCount").textContent =
-        myJobs.filter(job => job.status === "Interview").length;
-
-    document.getElementById("selectedCount").textContent =
-        myJobs.filter(job => job.status === "Selected").length;
-
-    document.getElementById("rejectedCount").textContent =
-        myJobs.filter(job => job.status === "Rejected").length;
+        if (element) {
+            element.textContent = value;
+        }
+    });
 }
 
-
-// =====================================
-// SHOW USER APPLICATIONS + SEARCH + FILTER
-// =====================================
+// ---------- DISPLAY USER APPLICATIONS ----------
 
 function showJobs() {
-    let email = localStorage.getItem("currentUser");
-    let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+    const user = getCurrentUser();
+    const container = document.getElementById("jobs");
 
-    let myJobs = jobs
-        .map(function(job, index) {
-            return { job: job, index: index };
-        })
-        .filter(function(item) {
-            return item.job.email === email;
-        });
+    if (!user || !container) return;
 
-    updateStatistics(myJobs.map(item => item.job));
+    const userJobs = getJobs().filter(job =>
+        getJobOwner(job) === user.email.toLowerCase()
+    );
 
-    let searchElement = document.getElementById("search");
-    let filterElement = document.getElementById("filterStatus");
+    updateStatistics(userJobs);
 
-    let search = searchElement ? searchElement.value.toLowerCase().trim() : "";
-    let selectedStatus = filterElement ? filterElement.value : "All";
+    const search = (
+        document.getElementById("search")?.value || ""
+    ).trim().toLowerCase();
 
-    let filteredJobs = myJobs.filter(function(item) {
-        let matchesCompany = item.job.company.toLowerCase().includes(search);
-        let matchesStatus = selectedStatus === "All" || item.job.status === selectedStatus;
+    const filter = document.getElementById("filterStatus")?.value || "All";
 
-        return matchesCompany && matchesStatus;
+    const filteredJobs = userJobs.filter(job => {
+        const matchesSearch =
+            String(job.company).toLowerCase().includes(search) ||
+            String(job.role).toLowerCase().includes(search);
+
+        const matchesStatus =
+            filter === "All" || job.status === filter;
+
+        return matchesSearch && matchesStatus;
     });
 
-    let output = "";
-
     if (filteredJobs.length === 0) {
-        output = "<p>No applications found.</p>";
-    } else {
-        filteredJobs.forEach(function(item) {
-            let job = item.job;
-
-            output += `
-                <div class="job-card">
-                    <h3>${escapeHTML(job.company)}</h3>
-                    <p><b>Role:</b> ${escapeHTML(job.role)}</p>
-                    <p><b>Status:</b> ${escapeHTML(job.status)}</p>
-                    <button onclick="editJob(${item.index})">Edit</button>
-                    <button onclick="deleteJob(${item.index})">Delete</button>
-                </div>
-            `;
-        });
-    }
-
-    document.getElementById("jobs").innerHTML = output;
-}
-
-
-// =====================================
-// EDIT APPLICATION
-// =====================================
-
-function editJob(index) {
-    let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
-    let job = jobs[index];
-    let currentUser = localStorage.getItem("currentUser");
-
-    if (!job || job.email !== currentUser) {
-        alert("Application not found");
+        container.innerHTML =
+            '<div class="empty-message">No applications found. Add an application to get started.</div>';
         return;
     }
 
-    let newCompany = prompt("Enter company name:", job.company);
-    if (newCompany === null) return;
+    container.innerHTML = filteredJobs.map(job => `
+        <article class="job-card">
+            <h3>${escapeHTML(job.company)}</h3>
+            <p><strong>Job Role:</strong> ${escapeHTML(job.role)}</p>
+            <p><strong>Application Date:</strong> ${escapeHTML(job.date || "Not available")}</p>
+            <p><strong>Status:</strong>
+                <span class="status-badge">${escapeHTML(job.status)}</span>
+            </p>
 
-    let newRole = prompt("Enter job role:", job.role);
-    if (newRole === null) return;
+            <button onclick="editJob('${escapeHTML(job.id)}')">
+                Edit
+            </button>
 
-    let newStatus = prompt(
-        "Enter status: Applied, Interview, Selected or Rejected",
+            <button class="delete-btn"
+                onclick="deleteJob('${escapeHTML(job.id)}')">
+                Delete
+            </button>
+        </article>
+    `).join("");
+}
+
+// ---------- EDIT APPLICATION ----------
+
+function editJob(id) {
+    const user = getCurrentUser();
+    if (!user) return;
+
+    const jobs = getJobs();
+
+    const index = jobs.findIndex(job =>
+        String(job.id) === String(id) &&
+        getJobOwner(job) === user.email.toLowerCase()
+    );
+
+    if (index === -1) {
+        alert("Application not found.");
+        return;
+    }
+
+    const job = jobs[index];
+
+    const company = prompt("Enter company name:", job.company);
+    if (company === null) return;
+
+    const role = prompt("Enter job role:", job.role);
+    if (role === null) return;
+
+    const status = prompt(
+        "Enter status: Applied, Interview, Selected, Rejected",
         job.status
     );
 
-    if (newStatus === null) return;
+    if (status === null) return;
 
-    newCompany = newCompany.trim();
-    newRole = newRole.trim();
-    newStatus = newStatus.trim();
+    const date = prompt(
+        "Enter application date (YYYY-MM-DD):",
+        job.date || new Date().toISOString().slice(0, 10)
+    );
 
-    let allowedStatuses = ["Applied", "Interview", "Selected", "Rejected"];
+    if (date === null) return;
 
-    if (!newCompany || !newRole) {
-        alert("Company and role cannot be empty");
+    const cleanStatus = status.trim();
+
+    if (!company.trim() || !role.trim()) {
+        alert("Company name and role cannot be empty.");
         return;
     }
 
-    if (!allowedStatuses.includes(newStatus)) {
-        alert("Please enter a valid status");
+    if (!VALID_STATUSES.includes(cleanStatus)) {
+        alert("Enter one of these statuses: Applied, Interview, Selected, Rejected.");
         return;
     }
 
-    jobs[index].company = newCompany;
-    jobs[index].role = newRole;
-    jobs[index].status = newStatus;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date.trim()) ||
+        Number.isNaN(Date.parse(date.trim() + "T00:00:00"))) {
+        alert("Please enter the date in YYYY-MM-DD format.");
+        return;
+    }
 
-    localStorage.setItem("jobs", JSON.stringify(jobs));
+    jobs[index].company = company.trim();
+    jobs[index].role = role.trim();
+    jobs[index].status = cleanStatus;
+    jobs[index].date = date.trim();
 
-    alert("Application updated successfully");
+    saveJobs(jobs);
+    showJobs();
+
+    alert("Application updated successfully!");
+}
+
+// ---------- DELETE APPLICATION ----------
+
+function deleteJob(id) {
+    const user = getCurrentUser();
+    if (!user) return;
+
+    if (!confirm("Are you sure you want to delete this application?")) {
+        return;
+    }
+
+    const jobs = getJobs().filter(job =>
+        !(
+            String(job.id) === String(id) &&
+            getJobOwner(job) === user.email.toLowerCase()
+        )
+    );
+
+    saveJobs(jobs);
     showJobs();
 }
 
+// ---------- USER LOGOUT ----------
 
-// =====================================
-// DELETE USER APPLICATION
-// =====================================
+function logout() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "index.html";
+}
 
-function deleteJob(index) {
-    let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
-    let currentUser = localStorage.getItem("currentUser");
+// ==========================================
+// ADMIN FUNCTIONS
+// ==========================================
 
-    if (!jobs[index] || jobs[index].email !== currentUser) {
-        alert("Application not found");
+// ---------- ADMIN LOGIN ----------
+
+function adminLoginUser(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("adminEmail")
+        .value.trim().toLowerCase();
+    const password = document.getElementById("adminPassword").value;
+
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        localStorage.setItem("adminLoggedIn", "true");
+        initializeAdmin();
+    } else {
+        alert("Invalid admin email or password.");
+    }
+}
+
+// ---------- ADMIN DASHBOARD ----------
+
+function initializeAdmin() {
+    const loginPanel = document.getElementById("adminLogin");
+    const dashboard = document.getElementById("adminDashboard");
+
+    if (!loginPanel || !dashboard) return;
+
+    loginPanel.style.display = "none";
+    dashboard.style.display = "block";
+
+    showUsers();
+    showAllJobs();
+}
+
+// ---------- ADMIN LOGOUT ----------
+
+function adminLogout() {
+    localStorage.removeItem("adminLoggedIn");
+    window.location.href = "admin.html";
+}
+
+// ---------- DISPLAY REGISTERED USERS ----------
+
+function showUsers() {
+    const container = document.getElementById("usersList");
+    if (!container) return;
+
+    const users = getUsers();
+
+    document.getElementById("adminUserCount").textContent = users.length;
+
+    if (users.length === 0) {
+        container.innerHTML =
+            '<div class="empty-message">No registered users yet.</div>';
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${users.map(user => `
+                        <tr>
+                            <td>${escapeHTML(user.name)}</td>
+                            <td>${escapeHTML(user.email)}</td>
+                        </tr>
+                    `).join("")}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+// ---------- DISPLAY ALL APPLICATIONS ----------
+
+function showAllJobs() {
+    const container = document.getElementById("allJobs");
+    if (!container) return;
+
+    const jobs = getJobs();
+
+    document.getElementById("adminJobCount").textContent = jobs.length;
+
+    const search = (
+        document.getElementById("adminSearch")?.value || ""
+    ).trim().toLowerCase();
+
+    const filteredJobs = jobs.filter(job =>
+        String(job.company).toLowerCase().includes(search) ||
+        String(job.role).toLowerCase().includes(search) ||
+        getJobOwner(job).includes(search)
+    );
+
+    if (filteredJobs.length === 0) {
+        container.innerHTML =
+            '<div class="empty-message">No job applications found.</div>';
+        return;
+    }
+
+    container.innerHTML = filteredJobs.map(job => `
+        <article class="job-card">
+            <h3>${escapeHTML(job.company)}</h3>
+            <p><strong>Job Role:</strong> ${escapeHTML(job.role)}</p>
+            <p><strong>User Email:</strong> ${escapeHTML(getJobOwner(job))}</p>
+            <p><strong>Status:</strong> ${escapeHTML(job.status)}</p>
+            <p><strong>Date:</strong> ${escapeHTML(job.date || "Not available")}</p>
+
+            <button class="delete-btn"
+                onclick="adminDeleteJob('${escapeHTML(job.id)}')">
+                Delete Application
+            </button>
+        </article>
+    `).join("");
+}
+
+// ---------- ADMIN DELETE APPLICATION ----------
+
+function adminDeleteJob(id) {
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+        alert("Please login as admin.");
         return;
     }
 
@@ -318,94 +561,31 @@ function deleteJob(index) {
         return;
     }
 
-    jobs.splice(index, 1);
-    localStorage.setItem("jobs", JSON.stringify(jobs));
+    const jobs = getJobs().filter(
+        job => String(job.id) !== String(id)
+    );
 
-    showJobs();
-}
-
-
-// =====================================
-// LOGOUT
-// =====================================
-
-function logout() {
-    localStorage.removeItem("currentUser");
-    window.location.href = "index.html";
-}
-
-
-// =====================================
-// ADMIN - SHOW REGISTERED USERS
-// =====================================
-
-function showUsers() {
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    let output = "<h3>Registered Users</h3>";
-
-    if (users.length === 0) {
-        output += "<p>No users registered.</p>";
-    } else {
-        users.forEach(function(user) {
-            output += `
-                <div class="job-card">
-                    <p><b>Name:</b> ${escapeHTML(user.name)}</p>
-                    <p><b>Email:</b> ${escapeHTML(user.email)}</p>
-                </div>
-            `;
-        });
-    }
-
-    document.getElementById("adminData").innerHTML = output;
-}
-
-
-// =====================================
-// ADMIN - SHOW ALL APPLICATIONS
-// =====================================
-
-function showAllJobs() {
-    let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
-    let output = "<h3>All Job Applications</h3>";
-
-    if (jobs.length === 0) {
-        output += "<p>No applications found.</p>";
-    } else {
-        jobs.forEach(function(job, index) {
-            output += `
-                <div class="job-card">
-                    <p><b>Company:</b> ${escapeHTML(job.company)}</p>
-                    <p><b>Role:</b> ${escapeHTML(job.role)}</p>
-                    <p><b>Status:</b> ${escapeHTML(job.status)}</p>
-                    <p><b>User:</b> ${escapeHTML(job.email)}</p>
-                    <button onclick="adminDeleteJob(${index})">Delete</button>
-                </div>
-            `;
-        });
-    }
-
-    document.getElementById("adminData").innerHTML = output;
-}
-
-
-// =====================================
-// ADMIN - DELETE APPLICATION
-// =====================================
-
-function adminDeleteJob(index) {
-    let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
-
-    if (!jobs[index]) {
-        alert("Application not found");
-        return;
-    }
-
-    if (!confirm("Delete this application?")) {
-        return;
-    }
-
-    jobs.splice(index, 1);
-    localStorage.setItem("jobs", JSON.stringify(jobs));
-
+    saveJobs(jobs);
     showAllJobs();
 }
+
+// ==========================================
+// PAGE INITIALIZATION
+// ==========================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // User dashboard
+    if (document.getElementById("jobs")) {
+        if (showUserDashboard()) {
+            showJobs();
+        }
+    }
+
+    // Admin dashboard
+    if (document.getElementById("adminDashboard")) {
+        if (localStorage.getItem("adminLoggedIn") === "true") {
+            initializeAdmin();
+        }
+    }
+});

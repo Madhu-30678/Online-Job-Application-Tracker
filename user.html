@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobTrack - User Dashboard</title>
+    <title>JobTrack | User Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dashboard-page">
 
     <header class="topbar">
-        <div class="topbar-brand">JobTrack</div>
+        <a href="user.html" class="topbar-brand">JobTrack</a>
         <div class="topbar-actions">
             <span id="welcomeUser">Welcome!</span>
             <button onclick="logout()" class="logout-btn">Logout</button>
@@ -18,12 +18,12 @@
     </header>
 
     <main class="dashboard-container">
-        <div class="page-heading">
+        <section class="page-heading">
             <div>
                 <h1>My Dashboard</h1>
-                <p>Manage and track all your job applications.</p>
+                <p>Track and manage your job applications in one place.</p>
             </div>
-        </div>
+        </section>
 
         <section>
             <h2 class="section-title">Application Overview</h2>
@@ -55,8 +55,8 @@
         <section class="panel">
             <div class="panel-heading">
                 <div>
-                    <h2>Add Job Application</h2>
-                    <p>Enter the details of a job you applied for.</p>
+                    <h2>Add New Application</h2>
+                    <p>Enter the details of the job you applied for.</p>
                 </div>
             </div>
 
@@ -65,23 +65,28 @@
                     <div>
                         <label for="company">Company Name</label>
                         <input type="text" id="company"
-                               placeholder="e.g. Infosys" required>
+                               placeholder="Example: Infosys" required>
                     </div>
 
                     <div>
                         <label for="role">Job Role</label>
                         <input type="text" id="role"
-                               placeholder="e.g. Software Developer" required>
+                               placeholder="Example: Software Developer" required>
                     </div>
 
                     <div>
                         <label for="status">Application Status</label>
-                        <select id="status">
+                        <select id="status" required>
                             <option value="Applied">Applied</option>
                             <option value="Interview">Interview</option>
                             <option value="Selected">Selected</option>
                             <option value="Rejected">Rejected</option>
                         </select>
+                    </div>
+
+                    <div>
+                        <label for="applicationDate">Application Date</label>
+                        <input type="date" id="applicationDate" required>
                     </div>
                 </div>
 
@@ -93,10 +98,8 @@
 
         <section class="panel">
             <div class="panel-heading">
-                <div>
-                    <h2>My Applications</h2>
-                    <p>Search, filter, edit, and manage your applications.</p>
-                </div>
+                <h2>My Applications</h2>
+                <p>Search, filter, edit, and manage your applications.</p>
             </div>
 
             <div class="toolbar">
@@ -117,7 +120,7 @@
         </section>
 
         <footer class="footer">
-            Online Job Application Tracker | Academic Project
+            © 2026 JobTrack | Online Job Application Tracker
         </footer>
     </main>
 
