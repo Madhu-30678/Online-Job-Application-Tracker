@@ -1,95 +1,126 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>User Dashboard - Job Application Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobTrack - User Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<body class="dashboard-page">
 
-<body>
+    <header class="topbar">
+        <div class="topbar-brand">JobTrack</div>
+        <div class="topbar-actions">
+            <span id="welcomeUser">Welcome!</span>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
+    </header>
 
-<div class="container">
-
-    <h1>Online Job Application Tracker</h1>
-    <h2>User Dashboard</h2>
-
-    <h3>Application Statistics</h3>
-
-    <div id="stats" class="stats">
-        <div class="stat-card">
-            <h3 id="totalCount">0</h3>
-            <p>Total Applications</p>
+    <main class="dashboard-container">
+        <div class="page-heading">
+            <div>
+                <h1>My Dashboard</h1>
+                <p>Manage and track all your job applications.</p>
+            </div>
         </div>
 
-        <div class="stat-card">
-            <h3 id="appliedCount">0</h3>
-            <p>Applied</p>
-        </div>
+        <section>
+            <h2 class="section-title">Application Overview</h2>
 
-        <div class="stat-card">
-            <h3 id="interviewCount">0</h3>
-            <p>Interview</p>
-        </div>
+            <div class="stats">
+                <div class="stat-card">
+                    <span>Total Applications</span>
+                    <h2 id="totalCount">0</h2>
+                </div>
+                <div class="stat-card">
+                    <span>Applied</span>
+                    <h2 id="appliedCount">0</h2>
+                </div>
+                <div class="stat-card">
+                    <span>Interview</span>
+                    <h2 id="interviewCount">0</h2>
+                </div>
+                <div class="stat-card">
+                    <span>Selected</span>
+                    <h2 id="selectedCount">0</h2>
+                </div>
+                <div class="stat-card">
+                    <span>Rejected</span>
+                    <h2 id="rejectedCount">0</h2>
+                </div>
+            </div>
+        </section>
 
-        <div class="stat-card">
-            <h3 id="selectedCount">0</h3>
-            <p>Selected</p>
-        </div>
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Add Job Application</h2>
+                    <p>Enter the details of a job you applied for.</p>
+                </div>
+            </div>
 
-        <div class="stat-card">
-            <h3 id="rejectedCount">0</h3>
-            <p>Rejected</p>
-        </div>
-    </div>
+            <form id="jobForm" onsubmit="addJob(event)">
+                <div class="form-grid">
+                    <div>
+                        <label for="company">Company Name</label>
+                        <input type="text" id="company"
+                               placeholder="e.g. Infosys" required>
+                    </div>
 
-    <hr>
+                    <div>
+                        <label for="role">Job Role</label>
+                        <input type="text" id="role"
+                               placeholder="e.g. Software Developer" required>
+                    </div>
 
-    <button onclick="showForm()">Add Job Application</button>
+                    <div>
+                        <label for="status">Application Status</label>
+                        <select id="status">
+                            <option value="Applied">Applied</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Selected">Selected</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
 
-    <div id="form" style="display:none;">
-        <h3>Add Job Application</h3>
+                <button type="submit" class="primary-btn">
+                    + Add Application
+                </button>
+            </form>
+        </section>
 
-        <input type="text" id="company" placeholder="Company Name">
-        <input type="text" id="role" placeholder="Job Role">
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>My Applications</h2>
+                    <p>Search, filter, edit, and manage your applications.</p>
+                </div>
+            </div>
 
-        <select id="status">
-            <option value="Applied">Applied</option>
-            <option value="Interview">Interview</option>
-            <option value="Selected">Selected</option>
-            <option value="Rejected">Rejected</option>
-        </select>
+            <div class="toolbar">
+                <input type="search" id="search"
+                       placeholder="Search company or role..."
+                       oninput="showJobs()">
 
-        <button onclick="addJob()">Save Application</button>
-    </div>
+                <select id="filterStatus" onchange="showJobs()">
+                    <option value="All">All Statuses</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Selected">Selected</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
 
-    <hr>
+            <div id="jobs"></div>
+        </section>
 
-    <h3>My Applications</h3>
+        <footer class="footer">
+            Online Job Application Tracker | Academic Project
+        </footer>
+    </main>
 
-    <input
-        type="text"
-        id="search"
-        placeholder="Search by company name"
-        oninput="showJobs()"
-    >
-
-    <select id="filterStatus" onchange="showJobs()">
-        <option value="All">All Statuses</option>
-        <option value="Applied">Applied</option>
-        <option value="Interview">Interview</option>
-        <option value="Selected">Selected</option>
-        <option value="Rejected">Rejected</option>
-    </select>
-
-    <div id="jobs"></div>
-
-    <button onclick="logout()">Logout</button>
-
-</div>
-
-<script src="script.js"></script>
-<script>
-    showJobs();
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
