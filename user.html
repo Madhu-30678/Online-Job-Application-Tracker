@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Dashboard</title>
+    <title>User Dashboard - Job Application Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -9,47 +9,87 @@
 
 <div class="container">
 
-    <h1>Job Application Tracker</h1>
+    <h1>Online Job Application Tracker</h1>
     <h2>User Dashboard</h2>
 
-    <button onclick="showForm()">Add Application</button>
-    <button onclick="showJobs()">My Applications</button>
-    <button onclick="logout()">Logout</button>
+    <h3>Application Statistics</h3>
 
-    <!-- Add Application Form -->
+    <div id="stats" class="stats">
+        <div class="stat-card">
+            <h3 id="totalCount">0</h3>
+            <p>Total Applications</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 id="appliedCount">0</h3>
+            <p>Applied</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 id="interviewCount">0</h3>
+            <p>Interview</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 id="selectedCount">0</h3>
+            <p>Selected</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 id="rejectedCount">0</h3>
+            <p>Rejected</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <button onclick="showForm()">Add Job Application</button>
+
     <div id="form" style="display:none;">
-
         <h3>Add Job Application</h3>
 
         <input type="text" id="company" placeholder="Company Name">
-
         <input type="text" id="role" placeholder="Job Role">
 
         <select id="status">
-            <option>Applied</option>
-            <option>Interview</option>
-            <option>Selected</option>
-            <option>Rejected</option>
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview</option>
+            <option value="Selected">Selected</option>
+            <option value="Rejected">Rejected</option>
         </select>
 
-        <button onclick="addJob()">Add Job</button>
-
+        <button onclick="addJob()">Save Application</button>
     </div>
 
-    <!-- Search -->
-    <h3>Search Applications</h3>
+    <hr>
 
-    <input type="text"
-           id="search"
-           placeholder="Search Company"
-           onkeyup="searchJobs()">
+    <h3>My Applications</h3>
 
-    <!-- Applications -->
+    <input
+        type="text"
+        id="search"
+        placeholder="Search by company name"
+        oninput="showJobs()"
+    >
+
+    <select id="filterStatus" onchange="showJobs()">
+        <option value="All">All Statuses</option>
+        <option value="Applied">Applied</option>
+        <option value="Interview">Interview</option>
+        <option value="Selected">Selected</option>
+        <option value="Rejected">Rejected</option>
+    </select>
+
     <div id="jobs"></div>
+
+    <button onclick="logout()">Logout</button>
 
 </div>
 
 <script src="script.js"></script>
+<script>
+    showJobs();
+</script>
 
 </body>
 </html>
