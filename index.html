@@ -1,30 +1,47 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Job Application Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobTrack - Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<body class="auth-page">
 
-<body>
+    <div class="auth-card">
+        <div class="brand-icon">JT</div>
+        <h1>JobTrack</h1>
+        <p class="subtitle">Online Job Application Tracker</p>
 
-<div class="container">
-    <h1>Job Application Tracker</h1>
+        <h2>Welcome Back!</h2>
+        <p class="muted">Login to manage your job applications.</p>
 
-    <h2>Login</h2>
+        <form onsubmit="login(event)">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail"
+                   placeholder="Enter your email" required>
 
-    <input type="email" id="email" placeholder="Enter Email">
-    <input type="password" id="password" placeholder="Enter Password">
+            <label>Password</label>
+            <input type="password" id="loginPassword"
+                   placeholder="Enter your password" required>
 
-    <button onclick="login()">Login</button>
+            <button type="submit" class="primary-btn full-btn">
+                Login
+            </button>
+        </form>
 
-    <p>New user?
-        <a href="signup.html">Create Account</a>
-    </p>
+        <a class="forgot-link" href="forgot.html">Forgot Password?</a>
 
-    <p id="message"></p>
-</div>
+        <div class="auth-divider">OR</div>
 
-<script src="script.js"></script>
+        <a href="signup.html" class="secondary-btn full-btn">
+            Create New Account
+        </a>
 
+        <a href="admin.html" class="admin-link">Admin Login</a>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
