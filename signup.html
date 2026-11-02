@@ -2,47 +2,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobTrack | Sign Up</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobPortal | Signup</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-<body class="auth-page">
+<body data-page="signup">
 
-    <main class="auth-card">
-        <div class="brand-icon">JT</div>
-        <h1>Create Account</h1>
-        <p class="subtitle">Start managing your job applications.</p>
+  <header class="site-header">
+    <a class="brand" href="index.html">JobPortal</a>
+    <nav><a href="index.html">Login</a></nav>
+  </header>
 
-        <form onsubmit="signup(event)">
-            <label for="signupName">Full Name</label>
-            <input type="text" id="signupName"
-                   placeholder="Enter your full name" required>
+  <main class="auth-layout">
+    <form id="signupForm" class="panel auth-card">
 
-            <label for="signupEmail">Email Address</label>
-            <input type="email" id="signupEmail"
-                   placeholder="Enter your email" required>
+      <div class="eyebrow">GET STARTED</div>
+      <h1>Create Your Account</h1>
+      <p class="muted">Join JobPortal as a job seeker or recruiter.</p>
 
-            <label for="signupPassword">Password</label>
-            <input type="password" id="signupPassword"
-                   placeholder="Minimum 6 characters"
-                   minlength="6" required>
+      <label for="name">Full Name</label>
+      <input id="name" type="text" placeholder="Enter your full name"
+        autocomplete="name" maxlength="70" required>
 
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword"
-                   placeholder="Confirm your password" required>
+      <label for="email">Email Address</label>
+      <input id="email" type="email" placeholder="Enter your email"
+        autocomplete="email" required>
 
-            <button type="submit" class="primary-btn full-btn">
-                Create Account
-            </button>
-        </form>
+      <label for="password">Password</label>
+      <input id="password" type="password"
+        placeholder="At least 6 characters"
+        minlength="6" autocomplete="new-password" required>
 
-        <p class="bottom-text">
-            Already have an account?
-            <a href="index.html">Login here</a>
-        </p>
-    </main>
+      <label for="confirmPassword">Confirm Password</label>
+      <input id="confirmPassword" type="password"
+        placeholder="Re-enter your password"
+        minlength="6" autocomplete="new-password" required>
 
-    <script src="script.js"></script>
+      <label for="role">Account Type</label>
+      <select id="role" required>
+        <option value="user">Job Seeker</option>
+        <option value="recruiter">Recruiter</option>
+      </select>
+
+      <button class="btn btn-primary btn-block" type="submit">
+        Create Account
+      </button>
+
+      <p id="message" class="form-message" aria-live="polite"></p>
+
+      <p class="auth-bottom">
+        Already registered?
+        <a href="index.html">Login here</a>
+      </p>
+
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 JobPortal | Academic Project
+  </footer>
+
 </body>
 </html>

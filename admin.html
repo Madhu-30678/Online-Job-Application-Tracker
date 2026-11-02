@@ -2,86 +2,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobTrack | Admin</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobPortal | Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-<body class="dashboard-page">
+<body data-page="admin">
 
-    <main id="adminLogin" class="auth-card admin-login">
-        <div class="brand-icon">JT</div>
-        <h1>Admin Login</h1>
-        <p class="subtitle">Sign in to manage the application system.</p>
+  <header class="site-header">
+    <a class="brand" href="admin.html">JobPortal Admin</a>
+    <nav>
+      <span>Administration</span>
+      <button class="nav-button" onclick="logout()">Logout</button>
+    </nav>
+  </header>
 
-        <form onsubmit="adminLoginUser(event)">
-            <label for="adminEmail">Admin Email</label>
-            <input type="email" id="adminEmail"
-                   placeholder="Enter admin email" required>
+  <main class="page-container">
 
-            <label for="adminPassword">Password</label>
-            <input type="password" id="adminPassword"
-                   placeholder="Enter admin password" required>
+    <section class="page-heading">
+      <div>
+        <div class="eyebrow">ADMINISTRATION</div>
+        <h1>Platform Overview</h1>
+        <p class="muted">Monitor users, job postings and applications.</p>
+      </div>
+    </section>
 
-            <button type="submit" class="primary-btn full-btn">
-                Login as Admin
-            </button>
-        </form>
+    <section class="stats-grid stats-four">
 
-        <p class="bottom-text">
-            <a href="index.html">Back to User Login</a>
-        </p>
-    </main>
+      <article class="stat-card">
+        <span class="stat-label">Job Seekers</span>
+        <strong id="userCount">0</strong>
+      </article>
 
-    <div id="adminDashboard" style="display:none;">
-        <header class="topbar">
-            <a href="admin.html" class="topbar-brand">JobTrack Admin</a>
-            <div class="topbar-actions">
-                <span>Administrator</span>
-                <button onclick="adminLogout()" class="logout-btn">
-                    Logout
-                </button>
-            </div>
-        </header>
+      <article class="stat-card">
+        <span class="stat-label">Recruiters</span>
+        <strong id="recruiterCount">0</strong>
+      </article>
 
-        <main class="dashboard-container">
-            <section class="page-heading">
-                <h1>Admin Dashboard</h1>
-                <p>Manage registered users and monitor job applications.</p>
-            </section>
+      <article class="stat-card">
+        <span class="stat-label">Job Postings</span>
+        <strong id="jobCount">0</strong>
+      </article>
 
-            <section class="stats admin-stats">
-                <div class="stat-card">
-                    <span>Registered Users</span>
-                    <h2 id="adminUserCount">0</h2>
-                </div>
-                <div class="stat-card">
-                    <span>Total Applications</span>
-                    <h2 id="adminJobCount">0</h2>
-                </div>
-            </section>
+      <article class="stat-card">
+        <span class="stat-label">Applications</span>
+        <strong id="applicationCount">0</strong>
+      </article>
 
-            <section class="panel">
-                <h2>Registered Users</h2>
-                <div id="usersList"></div>
-            </section>
+    </section>
 
-            <section class="panel">
-                <h2>All Job Applications</h2>
+    <section class="panel section-panel">
+      <div class="section-title">
+        <h2>Registered Accounts</h2>
+      </div>
 
-                <input type="search" id="adminSearch"
-                       placeholder="Search by company, role or email..."
-                       oninput="showAllJobs()">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody id="adminUsers"></tbody>
+        </table>
+      </div>
+    </section>
 
-                <div id="allJobs"></div>
-            </section>
+    <section class="panel section-panel">
+      <div class="section-title">
+        <h2>All Job Postings</h2>
+      </div>
+      <div id="adminJobs" class="job-grid"></div>
+    </section>
 
-            <footer class="footer">
-                © 2026 JobTrack | Administration
-            </footer>
-        </main>
-    </div>
+    <section class="panel section-panel">
+      <div class="section-title">
+        <h2>All Applications</h2>
+      </div>
 
-    <script src="script.js"></script>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Applicant</th>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Status</th>
+              <th>Applied Date</th>
+            </tr>
+          </thead>
+          <tbody id="adminApplications"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    © 2026 JobPortal | Academic Project
+  </footer>
+
 </body>
 </html>

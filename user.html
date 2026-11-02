@@ -2,128 +2,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobTrack | User Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobPortal | Job Seeker Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-<body class="dashboard-page">
+<body data-page="user">
 
-    <header class="topbar">
-        <a href="user.html" class="topbar-brand">JobTrack</a>
-        <div class="topbar-actions">
-            <span id="welcomeUser">Welcome!</span>
-            <button onclick="logout()" class="logout-btn">Logout</button>
+  <header class="site-header">
+    <a class="brand" href="user.html">JobPortal</a>
+    <nav>
+      <a href="jobs.html">Find Jobs</a>
+      <a href="user.html" class="active">Dashboard</a>
+      <button class="nav-button" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main class="page-container">
+
+    <section class="page-heading">
+      <div>
+        <div class="eyebrow">JOB SEEKER WORKSPACE</div>
+        <h1 id="welcome">My Dashboard</h1>
+        <p class="muted">Manage your resume and track your applications.</p>
+      </div>
+      <a class="btn btn-primary" href="jobs.html">Explore Jobs</a>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <span class="stat-label">Total Applications</span>
+        <strong id="totalApps">0</strong>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-label">Under Review</span>
+        <strong id="pendingApps">0</strong>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-label">Selected</span>
+        <strong id="selectedApps">0</strong>
+      </article>
+    </section>
+
+    <section class="panel section-panel">
+      <div class="section-title">
+        <div>
+          <h2>My Resume</h2>
+          <p class="muted">Upload your PDF resume (maximum 500 KB).</p>
         </div>
-    </header>
+      </div>
 
-    <main class="dashboard-container">
-        <section class="page-heading">
-            <div>
-                <h1>My Dashboard</h1>
-                <p>Track and manage your job applications in one place.</p>
-            </div>
-        </section>
+      <div class="upload-row">
+        <input type="file" id="resumeFile" accept="application/pdf,.pdf">
+        <button class="btn btn-primary" id="uploadResume" type="button">
+          Save Resume
+        </button>
+      </div>
 
-        <section>
-            <h2 class="section-title">Application Overview</h2>
+      <p id="resumeMessage" class="form-message" aria-live="polite"></p>
+      <p id="resumeName" class="muted"></p>
+    </section>
 
-            <div class="stats">
-                <div class="stat-card">
-                    <span>Total Applications</span>
-                    <h2 id="totalCount">0</h2>
-                </div>
-                <div class="stat-card">
-                    <span>Applied</span>
-                    <h2 id="appliedCount">0</h2>
-                </div>
-                <div class="stat-card">
-                    <span>Interview</span>
-                    <h2 id="interviewCount">0</h2>
-                </div>
-                <div class="stat-card">
-                    <span>Selected</span>
-                    <h2 id="selectedCount">0</h2>
-                </div>
-                <div class="stat-card">
-                    <span>Rejected</span>
-                    <h2 id="rejectedCount">0</h2>
-                </div>
-            </div>
-        </section>
+    <section class="panel section-panel">
+      <div class="section-title">
+        <div>
+          <h2>My Applications</h2>
+          <p class="muted">Track the status of your job applications.</p>
+        </div>
+      </div>
 
-        <section class="panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Add New Application</h2>
-                    <p>Enter the details of the job you applied for.</p>
-                </div>
-            </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Job Title</th>
+              <th>Applied Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="myApplications"></tbody>
+        </table>
+      </div>
+    </section>
 
-            <form id="jobForm" onsubmit="addJob(event)">
-                <div class="form-grid">
-                    <div>
-                        <label for="company">Company Name</label>
-                        <input type="text" id="company"
-                               placeholder="Example: Infosys" required>
-                    </div>
+  </main>
 
-                    <div>
-                        <label for="role">Job Role</label>
-                        <input type="text" id="role"
-                               placeholder="Example: Software Developer" required>
-                    </div>
+  <footer class="site-footer">
+    © 2026 JobPortal | Academic Project
+  </footer>
 
-                    <div>
-                        <label for="status">Application Status</label>
-                        <select id="status" required>
-                            <option value="Applied">Applied</option>
-                            <option value="Interview">Interview</option>
-                            <option value="Selected">Selected</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="applicationDate">Application Date</label>
-                        <input type="date" id="applicationDate" required>
-                    </div>
-                </div>
-
-                <button type="submit" class="primary-btn">
-                    + Add Application
-                </button>
-            </form>
-        </section>
-
-        <section class="panel">
-            <div class="panel-heading">
-                <h2>My Applications</h2>
-                <p>Search, filter, edit, and manage your applications.</p>
-            </div>
-
-            <div class="toolbar">
-                <input type="search" id="search"
-                       placeholder="Search company or role..."
-                       oninput="showJobs()">
-
-                <select id="filterStatus" onchange="showJobs()">
-                    <option value="All">All Statuses</option>
-                    <option value="Applied">Applied</option>
-                    <option value="Interview">Interview</option>
-                    <option value="Selected">Selected</option>
-                    <option value="Rejected">Rejected</option>
-                </select>
-            </div>
-
-            <div id="jobs"></div>
-        </section>
-
-        <footer class="footer">
-            © 2026 JobTrack | Online Job Application Tracker
-        </footer>
-    </main>
-
-    <script src="script.js"></script>
 </body>
 </html>

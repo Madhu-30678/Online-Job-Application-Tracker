@@ -2,46 +2,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobTrack | Login</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobPortal | Login</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-<body class="auth-page">
+<body data-page="login">
 
-    <main class="auth-card">
-        <div class="brand-icon">JT</div>
-        <h1>JobTrack</h1>
-        <p class="subtitle">Online Job Application Tracker</p>
+  <header class="site-header">
+    <a class="brand" href="index.html">JobPortal</a>
+    <nav>
+      <a href="signup.html">Create Account</a>
+    </nav>
+  </header>
 
-        <h2>Welcome Back!</h2>
-        <p class="muted">Login to manage your job applications.</p>
+  <main class="auth-layout">
+    <form id="loginForm" class="panel auth-card">
 
-        <form onsubmit="login(event)">
-            <label for="loginEmail">Email Address</label>
-            <input type="email" id="loginEmail"
-                   placeholder="Enter your email" required>
+      <div class="eyebrow">WELCOME BACK</div>
+      <h1>Sign in to JobPortal</h1>
+      <p class="muted">Find opportunities and manage your applications.</p>
 
-            <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword"
-                   placeholder="Enter your password" required>
+      <label for="email">Email Address</label>
+      <input
+        id="email"
+        type="email"
+        autocomplete="username"
+        placeholder="Enter your email"
+        required
+      >
 
-            <button type="submit" class="primary-btn full-btn">
-                Login
-            </button>
-        </form>
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Enter your password"
+        required
+      >
 
-        <a href="forgot.html" class="forgot-link">Forgot Password?</a>
+      <button class="btn btn-primary btn-block" type="submit">
+        Login
+      </button>
 
-        <div class="divider"><span>OR</span></div>
+      <p id="message" class="form-message" aria-live="polite"></p>
 
-        <a href="signup.html" class="secondary-btn full-btn">
-            Create New Account
-        </a>
+      <div class="auth-links">
+        <a href="forgot.html">Forgot Password?</a>
+        <span>New user? <a href="signup.html">Create Account</a></span>
+      </div>
 
-        <a href="admin.html" class="admin-link">Admin Login</a>
-    </main>
+      <div class="demo-note">
+        <strong>Demo Admin Login</strong><br>
+        Email: admin@gmail.com<br>
+        Password: admin123
+      </div>
 
-    <script src="script.js"></script>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    © 2026 JobPortal | Academic Project
+  </footer>
+
 </body>
 </html>

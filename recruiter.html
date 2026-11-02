@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobPortal | Recruiter Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body data-page="recruiter">
+
+  <header class="site-header">
+    <a class="brand" href="recruiter.html">JobPortal</a>
+    <nav>
+      <a href="recruiter.html" class="active">Recruiter Dashboard</a>
+      <button class="nav-button" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main class="page-container">
+
+    <section class="page-heading">
+      <div>
+        <div class="eyebrow">RECRUITER WORKSPACE</div>
+        <h1>Manage Your Openings</h1>
+        <p class="muted">Publish jobs and manage candidate applications.</p>
+      </div>
+    </section>
+
+    <section class="panel section-panel">
+      <div class="section-title">
+        <div>
+          <h2 id="jobFormTitle">Post a New Job</h2>
+          <p class="muted">Enter the job details below.</p>
+        </div>
+      </div>
+
+      <form id="jobForm" class="form-grid">
+
+        <input type="hidden" id="jobId">
+
+        <div class="form-field">
+          <label for="title">Job Title</label>
+          <input id="title" required maxlength="100"
+            placeholder="Software Developer">
+        </div>
+
+        <div class="form-field">
+          <label for="company">Company Name</label>
+          <input id="company" required maxlength="100"
+            placeholder="Enter company name">
+        </div>
+
+        <div class="form-field">
+          <label for="category">Category</label>
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option>IT</option>
+            <option>Software</option>
+            <option>Finance</option>
+            <option>Marketing</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="location">Location</label>
+          <input id="location" required placeholder="Hyderabad">
+        </div>
+
+        <div class="form-field">
+          <label for="salary">Salary</label>
+          <input id="salary" placeholder="3-5 LPA">
+        </div>
+
+        <div class="form-field">
+          <label for="skills">Required Skills</label>
+          <input id="skills" placeholder="HTML, CSS, JavaScript">
+        </div>
+
+        <div class="form-field">
+          <label for="deadline">Application Deadline</label>
+          <input type="date" id="deadline" required>
+        </div>
+
+        <div class="form-field full-width">
+          <label for="description">Job Description</label>
+          <textarea id="description" rows="4" required
+            placeholder="Describe the job responsibilities and requirements"></textarea>
+        </div>
+
+        <div class="form-actions full-width">
+          <button class="btn btn-primary" type="submit">Save Job</button>
+          <button class="btn btn-light" type="button" id="cancelEdit">Cancel</button>
+        </div>
+
+      </form>
+
+      <p id="jobMessage" class="form-message" aria-live="polite"></p>
+    </section>
+
+    <section class="panel section-panel">
+      <div class="section-title">
+        <h2>My Job Postings</h2>
+      </div>
+      <div id="recruiterJobs" class="job-grid"></div>
+    </section>
+
+    <section class="panel section-panel">
+      <div class="section-title">
+        <div>
+          <h2>Received Applications</h2>
+          <p class="muted">Review candidates and update their application status.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Applicant</th>
+              <th>Email</th>
+              <th>Job</th>
+              <th>Resume</th>
+              <th>Status</th>
+              <th>Update Status</th>
+            </tr>
+          </thead>
+          <tbody id="receivedApplications"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    © 2026 JobPortal | Academic Project
+  </footer>
+
+</body>
+</html>

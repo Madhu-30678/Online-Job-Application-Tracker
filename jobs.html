@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobPortal | Find Jobs</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body data-page="jobs">
+
+  <header class="site-header">
+    <a class="brand" href="user.html">JobPortal</a>
+    <nav>
+      <a href="jobs.html" class="active">Find Jobs</a>
+      <a href="user.html">Dashboard</a>
+      <button class="nav-button" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main class="page-container">
+
+    <section class="page-heading">
+      <div>
+        <div class="eyebrow">CAREER OPPORTUNITIES</div>
+        <h1>Find Your Next Job</h1>
+        <p class="muted">Discover opportunities posted by recruiters.</p>
+      </div>
+    </section>
+
+    <section class="filter-panel">
+      <div class="filter-field">
+        <label for="jobSearch">Search Jobs</label>
+        <input id="jobSearch"
+          placeholder="Search title, company, skills or location">
+      </div>
+
+      <div class="filter-field">
+        <label for="categoryFilter">Job Category</label>
+        <select id="categoryFilter">
+          <option value="">All Categories</option>
+          <option>IT</option>
+          <option>Software</option>
+          <option>Finance</option>
+          <option>Marketing</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </section>
+
+    <p id="message" class="form-message" aria-live="polite"></p>
+
+    <div id="jobList" class="job-grid"></div>
+
+  </main>
+
+  <footer class="site-footer">
+    © 2026 JobPortal | Academic Project
+  </footer>
+
+</body>
+</html>
